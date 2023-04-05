@@ -34,7 +34,8 @@ namespace ESP.Controllers
         {
            var questions = await mvcDbContext.Question.ToListAsync();
             List<Question> questionsFiltr = new List<Question>();
-
+            List<Question> questionsRand = new List<Question>();
+            Random rnd = new Random();
 
             foreach (var quest in questions)
             {
@@ -43,7 +44,21 @@ namespace ESP.Controllers
                     questionsFiltr.Add(quest);
                 }
             }
-            return View(questionsFiltr);
+            if (questionsFiltr.Count>=3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    int randNum = rnd.Next(questionsFiltr.Count);
+                    questionsRand.Add(questionsFiltr[randNum]);
+                    questionsFiltr.Remove(questionsFiltr[randNum]);
+                }
+                return View(questionsRand);
+            }
+            else
+            {
+                return View(questionsFiltr);
+            }
+            
         }
         [HttpGet]
         public async Task<IActionResult> IndexQuest()
