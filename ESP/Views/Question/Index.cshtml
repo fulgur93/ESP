@@ -1,0 +1,47 @@
+﻿@using ESP.Models.Domains
+@model List<ESP.Models.Domains.Question>
+@using (Html.BeginForm()) { }
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Add Question</h1>
+<form method="post" asp-action="Index" class="mt-5">
+@*    <div class="mb-3">
+        <label for="" class="form-label">Category</label>
+        <input type="text" class="form-control" name="category">
+    </div>*@
+    <div class="u-form-group u-label-top">
+        <label class="control-label">Category</label>
+
+            @Html.DropDownListFor(m => m.FirstOrDefault().Category,new SelectList(Enum.GetValues(typeof(param))),"Select Param",new {@class = "form-control"})
+        
+        @*<a name="category">@Html.DropDownList("Category",  new SelectList(Model.Select(x => new { Value = x, Text = x }),"Select Category"),new {@class = "form-control"})</a>*@
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Category</th>
+            <th>Creator</th>
+            <th>CreationTime</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quest in Model)
+        {
+                <tr>
+                    <td>@quest.Text</td>
+                    <td>@quest.Answer</td>
+                    <td>@quest.Category</td>
+                    <td>@quest.Creator</td>
+                    <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
+                    <td><a href="Question/Update/@quest.Id">Update</a></td>
+                </tr>
+        }
+    </tbody>
+</table>

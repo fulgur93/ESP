@@ -1,0 +1,30 @@
+﻿@model List<ESP.Models.Domains.Question>
+
+<h1>Questions</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Category</th>
+            <th>Creator</th>
+            <th>CreationTime</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quest in Model)
+        {
+            <tr>
+                <td>@quest.Text</td>
+                <td>@quest.Answer</td>
+                <td>@quest.Category</td>
+                <td>@quest.Creator</td>
+                <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
+                <td><a href="Question/Update/@quest.Id">Update</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
