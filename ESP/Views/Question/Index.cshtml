@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<h1>Add Question</h1>
+<h1>Draw questions</h1>
 <form method="post" asp-action="Index" class="mt-5">
 @*    <div class="mb-3">
         <label for="" class="form-label">Category</label>
@@ -12,11 +12,10 @@
     </div>*@
     <div class="u-form-group u-label-top">
         <label class="control-label">Category</label>
-
             @Html.DropDownListFor(m => m.FirstOrDefault().Category,new SelectList(Enum.GetValues(typeof(param))),"Select Param",new {@class = "form-control"})
-        
         @*<a name="category">@Html.DropDownList("Category",  new SelectList(Model.Select(x => new { Value = x, Text = x }),"Select Category"),new {@class = "form-control"})</a>*@
     </div>
+    <br>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
