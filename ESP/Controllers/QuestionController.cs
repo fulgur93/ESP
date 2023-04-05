@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
-//Zmiana
+
 namespace ESP.Controllers
 {
     public class QuestionController : Controller
