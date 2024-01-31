@@ -82,7 +82,11 @@ namespace ESP.Controllers
                     Id = Guid.NewGuid(),
                     Text = addQuestionRequest.Text,
                     Category = addQuestionRequest.Category,
-                    Answer = addQuestionRequest.Answer,
+                    //Answer = addQuestionRequest.Answer,
+                    AnswerA = addQuestionRequest.AnswerA,
+                    AnswerB = addQuestionRequest.AnswerB,
+                    AnswerC = addQuestionRequest.AnswerC,
+                    CorrectAnswer = addQuestionRequest.CorrectAnswer,
                     CreationTime = DateTime.Now,
                     Creator = _userManager.GetUserName(HttpContext.User) // Nadanie nazwy użytkownika
                 };
@@ -111,7 +115,10 @@ namespace ESP.Controllers
                     Id = quest.Id,
                     Text = quest.Text,
                     Category = quest.Category,
-                    Answer = quest.Answer,
+                    AnswerA = quest.AnswerA,
+                    AnswerB = quest.AnswerB,
+                    AnswerC = quest.AnswerC,
+                    CorrectAnswer = quest.CorrectAnswer,
                     CreationTime = DateTime.Now,
                     Creator = quest.Creator
                 };
@@ -127,7 +134,11 @@ namespace ESP.Controllers
             {
                 quest.Text = model.Text;
                 quest.Category = model.Category;
-                quest.Answer = model.Answer;
+                //quest.Answer = model.Answer;
+                quest.AnswerA = model.AnswerA;
+                quest.AnswerB = model.AnswerB;
+                quest.AnswerC = model.AnswerC;
+                quest.CorrectAnswer = model.CorrectAnswer;
                 quest.CreationTime = DateTime.Now;
                 quest.Creator = model.Creator;
 
