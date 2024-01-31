@@ -12,7 +12,7 @@ namespace ESP.Controllers
 {
     public class QuestionController : Controller
     {
-        private readonly MVCDBC mvcDbContext;
+        private readonly MVCDBC mvcDbContext;//Baza pytań
         private readonly UserManager<ForumUser> _userManager; // Do rozpoznawania użytkownika
         private readonly ILogger<HomeController> _logger;
         public QuestionController(MVCDBC mvcDbContext, UserManager<ForumUser> userManager, ILogger<HomeController> logger)

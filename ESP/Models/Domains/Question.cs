@@ -15,6 +15,7 @@ namespace ESP.Models.Domains
         public DateTime CreationTime { get; set; }
 
     }
+    [Flags]
     public enum param
     {
         [Display(Name = "Organizacja i funkcjonowanie administracji publicznej")]

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
 
 namespace ESP.Areas.Identity.Data;
-
+//Kontekst do bazy danych (połączenie)
 public class ForumDBUsers : IdentityDbContext<ForumUser>
 {
     public ForumDBUsers(DbContextOptions<ForumDBUsers> options) : base(options)
@@ -22,7 +22,7 @@ public class ForumDBUsers : IdentityDbContext<ForumUser>
         builder.ApplyConfiguration(new ForumUserEntityConfiguration());
     }
 }
-
+//Klasa fdziedzicząca z użttkownika
 public class ForumUserEntityConfiguration : IEntityTypeConfiguration<ForumUser>
 {
     public void Configure(EntityTypeBuilder<ForumUser> builder)
