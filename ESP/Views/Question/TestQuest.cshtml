@@ -1,0 +1,45 @@
+﻿@model List<ESP.Models.Domains.Question>
+
+<h1>Odpowiedz na Pytania</h1>
+
+<table class="table">
+    <thead>
+@*         <tr>
+            <th>Pytanie</th>
+        <tr> *@
+@*         </tr>
+            <th>AnswerA</th>
+            <th>AnswerB</th>
+            <th>AnswerC</th>
+            <th></th>
+        </tr> *@
+    </thead>
+    <tbody>
+        @foreach (var quest in Model)
+        {
+            <th>Pytanie</th>
+            <tr>
+                <td>@quest.Text</td>
+            </tr>
+        <td><b>A:</b> @quest.AnswerA</td>
+        <tr></tr>
+        <td><b>B:</b> @quest.AnswerB</td>
+        <tr></tr>
+        <td><b>C:</b> @quest.AnswerC</td>
+        <tr></tr>
+@*                 <td>@quest.CorrectAnswer</td>
+                <td>@quest.Category</td>
+                <td>@quest.Creator</td>
+                <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
+    <td><a href="Question/Update/@quest.Id">Update</a></td>*@
+    <td>
+            <a><button type="submit" class="btn btn-primary">A</button></a>
+            <a><button type="submit" class="btn btn-primary">B</button></a>
+            <a><button type="submit" class="btn btn-primary">C</button></a>
+    </td>
+
+        <tr></tr>
+        }
+    </tbody>
+</table>
+

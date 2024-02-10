@@ -66,6 +66,12 @@ namespace ESP.Controllers
             var questions = await mvcDbContext.Question.ToListAsync();
             return View(questions);
         }
+        [HttpGet]
+        public async Task<IActionResult> TestQuest()//Test
+        {
+            var questions = await mvcDbContext.Question.ToListAsync();
+            return View(questions);
+        }
         //Dodawanie pytań
         [HttpGet]
         public IActionResult Add()
