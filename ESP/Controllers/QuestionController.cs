@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ESP.Controllers
@@ -175,5 +178,75 @@ namespace ESP.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public ActionResult CheckAnswer(List<Question> questions)
+        {
+            // questions to lista pytań przekazanych z formularza
+            int wynik = 0;
+            foreach (var quest in questions)
+            {
+                // question.Id - Id pytania
+                // question.CorrectAnswer - Poprawna odpowiedź
+                // question.SelectedOption - Wybrana odpowiedź
+
+                if (quest.CorrectAnswer == quest.SelectedOption)
+                {
+                    // Odpowiedź jest poprawna
+                    wynik++;
+                }
+                else
+                {
+                    // Odpowiedź jest niepoprawna
+                }
+            }
+            if (wynik>=12)//60%
+            {
+                return RedirectToAction("Congratulations", new { score = wynik });
+                //Wygenerój certyfikat
+            }
+            else
+            {
+                return RedirectToAction("FailedTest", new { score = wynik });
+            }
+            // ...
+            // return View("NazwaTwojegoWidoku", questions);
+            return View();
+        }
+        public ActionResult Congratulations(int score)
+        {
+            ViewBag.Score = score;
+            return View();
+        }
+
+        public ActionResult FailedTest(int score)
+        {
+            ViewBag.Score = score;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GeneratePdf(int score)
+        {
+            // Logika generowania PDF na podstawie wyniku testu
+            // Użyj odpowiednich narzędzi do generowania PDF, np. iTextSharp
+
+            // Przykładowy kod generowania PDF
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (PdfWriter writer = new PdfWriter(stream))
+                {
+                    using (PdfDocument pdf = new PdfDocument(writer))
+                    {
+                        Document document = new Document(pdf);
+                        document.Add(new Paragraph($"Certyfikat ukończenia testu z wynikiem: {score}"));
+                        // Dodaj więcej treści do dokumentu według potrzeb
+                        document.Close();
+                    }
+                }
+
+                Response.Headers["Content-Disposition"] = $"inline; filename=Certificate_{score}.pdf";
+                return File(stream.ToArray(), "application/pdf");
+            }
+        }
+
     }
 }

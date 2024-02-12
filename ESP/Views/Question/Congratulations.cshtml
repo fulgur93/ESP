@@ -1,0 +1,9 @@
+﻿@model int
+
+<h2>Gratulacje! Zdałeś test!</h2>
+<p>Masz wynik: @Model</p>
+<p>Tutaj możesz pobrać swój certyfikat.</p>
+@using (Html.BeginForm("GeneratePdf", "QuestionController", new { score = Model }, FormMethod.Post))
+{
+    <button type="submit">Generuj PDF</button>
+}

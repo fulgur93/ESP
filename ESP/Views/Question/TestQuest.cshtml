@@ -15,30 +15,45 @@
         </tr> *@
     </thead>
     <tbody>
-        @foreach (var quest in Model)
+        @using (Html.BeginForm("CheckAnswer", "QuestionController", FormMethod.Post))
         {
-            <th>Pytanie</th>
-            <tr>
-                <td>@quest.Text</td>
-            </tr>
-        <td><b>A:</b> @quest.AnswerA</td>
-        <tr></tr>
-        <td><b>B:</b> @quest.AnswerB</td>
-        <tr></tr>
-        <td><b>C:</b> @quest.AnswerC</td>
-        <tr></tr>
-@*                 <td>@quest.CorrectAnswer</td>
-                <td>@quest.Category</td>
-                <td>@quest.Creator</td>
-                <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
-    <td><a href="Question/Update/@quest.Id">Update</a></td>*@
-    <td>
-            <a><button type="submit" class="btn btn-primary">A</button></a>
-            <a><button type="submit" class="btn btn-primary">B</button></a>
-            <a><button type="submit" class="btn btn-primary">C</button></a>
-    </td>
+            // Grupowanie questów według kategorii
+            var groupedQuests = Model.GroupBy(q => q.Category);
 
-        <tr></tr>
+            foreach (var group in groupedQuests)
+            {
+                // Pobranie dwóch questów z każdej grupy
+                var selectedQuests = group.OrderBy(q => Guid.NewGuid()).Take(2);
+
+                foreach (var quest in selectedQuests)
+                {
+                <th>Pytanie</th>
+                <tr>
+                    <td>@quest.Text</td>
+                </tr>
+                <td><b>A:</b> @quest.AnswerA</td>
+                <tr></tr>
+                <td><b>B:</b> @quest.AnswerB</td>
+                <tr></tr>
+                <td><b>C:</b> @quest.AnswerC</td>
+                <tr></tr>
+                <input type="hidden" name="questions[@quest.Id].Id" value="@quest.Id" />
+                <input type="hidden" name="questions[@quest.Id].CorrectAnswer" value="@quest.CorrectAnswer" />
+                <label>
+                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="1"> A
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="2"> B
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="3"> C
+                </label>
+                <tr></tr>
+                }
+            }
+        <input type="submit" value="Wyślij">
         }
     </tbody>
 </table>
