@@ -2,20 +2,9 @@
 
 <h1>Odpowiedz na Pytania</h1>
 
-<table class="table">
-    <thead>
-@*         <tr>
-            <th>Pytanie</th>
-        <tr> *@
-@*         </tr>
-            <th>AnswerA</th>
-            <th>AnswerB</th>
-            <th>AnswerC</th>
-            <th></th>
-        </tr> *@
-    </thead>
-    <tbody>
-        @using (Html.BeginForm("CheckAnswer", "QuestionController", FormMethod.Post))
+
+    
+        @using (Html.BeginForm("CheckAnswer", "Question", FormMethod.Post))
         {
             // Grupowanie questów według kategorii
             var groupedQuests = Model.GroupBy(q => q.Category);
@@ -27,34 +16,51 @@
 
                 foreach (var quest in selectedQuests)
                 {
-                <th>Pytanie</th>
+
+                    <input type="hidden" name="questions[@quest.Id].Id" value="@quest.Id" />
+                    <input type="hidden" name="questions[@quest.Id].CorrectAnswer" value="@quest.CorrectAnswer" />
+            <input type="hidden" name="questions[@quest.Id].Text" value="@quest.Text" />
+            <table class="table">
+                <tbody>
+                    <tr>
+                <th></th>
+                    </tr>
                 <tr>
-                    <td>@quest.Text</td>
+                    <th>@quest.Text</th>
                 </tr>
-                <td><b>A:</b> @quest.AnswerA</td>
+                <tr>
+                <td>
+                    <label>
+                        <input type="radio" name="questions[@quest.Id].SelectedOption" value="1">
+                    </label>
+                    <b>A:</b> @quest.AnswerA
+                    </td>
+                    </tr>
                 <tr></tr>
-                <td><b>B:</b> @quest.AnswerB</td>
+                <tr>
+                <td>
+                    <label>
+                        <input type="radio" name="questions[@quest.Id].SelectedOption" value="2">
+                    </label>
+                    <b>B:</b> @quest.AnswerB
+                    </td>
+                    </tr>
                 <tr></tr>
-                <td><b>C:</b> @quest.AnswerC</td>
+                    <tr>
+                <td>
+                    <label>
+                        <input type="radio" name="questions[@quest.Id].SelectedOption" value="3">
+                    </label>
+                    <b>C:</b> @quest.AnswerC
+                    </td>
+                    </tr>
                 <tr></tr>
-                <input type="hidden" name="questions[@quest.Id].Id" value="@quest.Id" />
-                <input type="hidden" name="questions[@quest.Id].CorrectAnswer" value="@quest.CorrectAnswer" />
-                <label>
-                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="1"> A
-                </label>
-                <br>
-                <label>
-                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="2"> B
-                </label>
-                <br>
-                <label>
-                    <input type="radio" name="questions[@quest.Id].SelectedOption" value="3"> C
-                </label>
                 <tr></tr>
+                </tbody>
+            </table>
                 }
             }
-        <input type="submit" value="Wyślij">
-        }
-    </tbody>
-</table>
 
+        <input type="submit" class="btn btn-primary" value="Wyślij">
+        }
+        
