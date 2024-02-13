@@ -1,11 +1,10 @@
 ﻿@model List<ESP.Models.Domains.Question>
-
 <h1>Odpowiedz na Pytania</h1>
 
 
-    
-        @using (Html.BeginForm("CheckAnswer", "Question", FormMethod.Post))
-        {
+
+@using (Html.BeginForm("CheckAnswer", "Question"))
+{
             // Grupowanie questów według kategorii
             var groupedQuests = Model.GroupBy(q => q.Category);
 
@@ -16,10 +15,15 @@
 
                 foreach (var quest in selectedQuests)
                 {
-
-                    <input type="hidden" name="questions[@quest.Id].Id" value="@quest.Id" />
-                    <input type="hidden" name="questions[@quest.Id].CorrectAnswer" value="@quest.CorrectAnswer" />
-            <input type="hidden" name="questions[@quest.Id].Text" value="@quest.Text" />
+                <input type="hidden" name="questions[@quest.Id].Id" value="@quest.Id" />
+                <input type="hidden" name="questions[@quest.Id].CorrectAnswer" value="@quest.CorrectAnswer" />
+                <input type="hidden" name="questions[@quest.Id].Text" value="@quest.Text" />
+                <input type="hidden" name="questions[@quest.Id].Category" value="@quest.Category" />
+                <input type="hidden" name="questions[@quest.Id].AnswerA" value="@quest.AnswerA" />
+                <input type="hidden" name="questions[@quest.Id].AnswerB" value="@quest.AnswerB" />
+                <input type="hidden" name="questions[@quest.Id].AnswerC" value="@quest.AnswerC" />
+                <input type="hidden" name="questions[@quest.Id].Creator" value="@quest.Creator" />
+                <input type="hidden" name="questions[@quest.Id].CreationTime" value="@quest.CreationTime" />
             <table class="table">
                 <tbody>
                     <tr>
@@ -31,7 +35,7 @@
                 <tr>
                 <td>
                     <label>
-                        <input type="radio" name="questions[@quest.Id].SelectedOption" value="1">
+                     <input type="radio" name="questions[@quest.Id].SelectedOption" value="1">
                     </label>
                     <b>A:</b> @quest.AnswerA
                     </td>
@@ -49,7 +53,7 @@
                     <tr>
                 <td>
                     <label>
-                        <input type="radio" name="questions[@quest.Id].SelectedOption" value="3">
+                      <input type="radio" name="questions[@quest.Id].SelectedOption" value="3">
                     </label>
                     <b>C:</b> @quest.AnswerC
                     </td>
@@ -61,6 +65,70 @@
                 }
             }
 
-        <input type="submit" class="btn btn-primary" value="Wyślij">
+    <input type="submit" class="btn btn-primary" value="Wyślij">
         }
-        
+
+
+
+
+
+
+@* 
+
+<form method="post" action="Update" class="mt-5">
+    @{
+        // Grupowanie questów według kategorii
+        var groupedQuests1 = Model.GroupBy(q => q.Category);
+
+        foreach (var group in groupedQuests1)
+        {
+            // Pobranie dwóch questów z każdej grupy
+            var selectedQuests = group.OrderBy(q => Guid.NewGuid()).Take(2);
+
+            foreach (var quest in selectedQuests)
+            {
+    <div class="mb-3">
+        <label for="" class="form-label">Id</label>
+        <input type="text" class="form-control" asp-for="quest.Id" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Question</label>
+        <input type="text" class="form-control" asp-for="Text">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Creator Name</label>
+        <input type="text" class="form-control" asp-for="Creator">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Question Category</label>
+        <input type="text" class="form-control" asp-for="Category">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Answer A</label>
+        <input type="text" class="form-control" asp-for="AnswerA">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Answer B</label>
+        <input type="text" class="form-control" asp-for="AnswerB">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Answer C</label>
+        <input type="text" class="form-control" asp-for="AnswerC">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Correct Answer</label>
+        <input type="text" class="form-control" asp-for="CorrectAnswer">
+    </div>
+        <div class="mb-3">
+    <label for="" class="form-label">Selected Option</label>
+    <input type="text" class="form-control" asp-for="SelectedOption">
+    </div> 
+    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+                }
+
+
+                }
+    <button type="submit" class="btn btn-danger" asp-action="Delete" asp-controller="Question">Delete</button>
+
+</form> *@

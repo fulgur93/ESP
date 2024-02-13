@@ -25,7 +25,8 @@
                 <td>@quest.Category</td>
                 <td>@quest.Creator</td>
                 <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
-                <td><a href="Question/Update/@quest.Id">Update</a></td>
+                @* <td>@quest.SelectedOption</td> *@
+                <td><a href="Update/@quest.Id">Update</a></td>
             </tr>
         }
     </tbody>

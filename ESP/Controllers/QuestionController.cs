@@ -179,7 +179,7 @@ namespace ESP.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         [HttpPost]
-        public ActionResult CheckAnswer(List<Question> questions)
+        public IActionResult CheckAnswer(List<Question> questions)
         {
             // questions to lista pytań przekazanych z formularza
             int wynik = 0;
