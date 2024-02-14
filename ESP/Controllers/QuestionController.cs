@@ -2,14 +2,15 @@
 using ESP.Data;
 using ESP.Models;
 using ESP.Models.Domains;
+using iText.Commons.Actions.Contexts;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ESP.Controllers
 {
@@ -27,6 +28,13 @@ namespace ESP.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            // Ustaw zmienną w sesji
+            HttpContext.Session.SetInt32("wynik", 0);
+            // Ustaw zmienną w sesji
+            HttpContext.Session.SetInt32("nrPytania", 1);
+            HttpContext.Session.SetInt32("skip", 0);
+            HttpContext.Session.SetString("prewId", "");
+
             //var questions = await mvcDbContext.Question.ToListAsync();
             List<Question> questions = new List<Question>();
             return View(questions);
@@ -35,7 +43,7 @@ namespace ESP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(param category)
         {
-           var questions = await mvcDbContext.Question.ToListAsync();
+            var questions = await mvcDbContext.Question.ToListAsync();
             List<Question> questionsFiltr = new List<Question>();
             List<Question> questionsRand = new List<Question>();
             Random rnd = new Random();
@@ -47,7 +55,7 @@ namespace ESP.Controllers
                     questionsFiltr.Add(quest);
                 }
             }
-            if (questionsFiltr.Count>=3)
+            if (questionsFiltr.Count >= 3)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -61,7 +69,7 @@ namespace ESP.Controllers
             {
                 return View(questionsFiltr);
             }
-            
+
         }
         [HttpGet]
         public async Task<IActionResult> IndexQuest()
@@ -73,6 +81,8 @@ namespace ESP.Controllers
         public async Task<IActionResult> TestQuest()//Test
         {
             var questions = await mvcDbContext.Question.ToListAsync();
+            HttpContext.Session.SetInt32("wynik", 0);
+            HttpContext.Session.SetInt32("nrPytania", 0);
             return View(questions);
         }
         //Dodawanie pytań
@@ -108,13 +118,13 @@ namespace ESP.Controllers
             {
                 return RedirectToAction("Error");
             }
-            
-           
 
-            
+
+
+
         }
         [HttpGet]
-        public async  Task<IActionResult> Update(Guid id)
+        public async Task<IActionResult> Update(Guid id)
         {
             var quest = await mvcDbContext.Question.FirstOrDefaultAsync(x => x.Id == id);
             if (quest != null)
@@ -131,7 +141,7 @@ namespace ESP.Controllers
                     CreationTime = DateTime.Now,
                     Creator = quest.Creator
                 };
-                return await Task.Run(() => View("Update",viewModel));
+                return await Task.Run(() => View("Update", viewModel));
             }
             return RedirectToAction("Index");
         }
@@ -139,7 +149,7 @@ namespace ESP.Controllers
         public async Task<IActionResult> Update(UpdateQuestionViewModel model)
         {
             var quest = await mvcDbContext.Question.FindAsync(model.Id);
-            if(quest != null)
+            if (quest != null)
             {
                 quest.Text = model.Text;
                 quest.Category = model.Category;
@@ -199,7 +209,7 @@ namespace ESP.Controllers
                     // Odpowiedź jest niepoprawna
                 }
             }
-            if (wynik>=12)//60%
+            if (wynik >= 12)//60%
             {
                 return RedirectToAction("Congratulations", new { score = wynik });
                 //Wygenerój certyfikat
@@ -212,16 +222,20 @@ namespace ESP.Controllers
             // return View("NazwaTwojegoWidoku", questions);
             return View();
         }
-       
+
         public ActionResult Congratulations(int score)
         {
             ViewBag.Score = score;
+            HttpContext.Session.SetInt32("wynik", 0);
+            HttpContext.Session.SetInt32("nrPytania", 0);
             return View();
         }
 
         public ActionResult FailedTest(int score)
         {
             ViewBag.Score = score;
+            HttpContext.Session.SetInt32("wynik", 0);
+            HttpContext.Session.SetInt32("nrPytania", 0);
             return View();
         }
         [HttpPost]
@@ -247,6 +261,103 @@ namespace ESP.Controllers
                 Response.Headers["Content-Disposition"] = $"inline; filename=Certificate_{score}.pdf";
                 return File(stream.ToArray(), "application/pdf");
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> OneTest(Guid id)
+        {
+            var quest = await mvcDbContext.Question.FirstOrDefaultAsync(x => x.Id == id);
+            if (quest != null)
+            {
+                var viewModel = new UpdateQuestionViewModel()
+                {
+                    Id = quest.Id,
+                    Text = quest.Text,
+                    Category = quest.Category,
+                    AnswerA = quest.AnswerA,
+                    AnswerB = quest.AnswerB,
+                    AnswerC = quest.AnswerC,
+                    CorrectAnswer = quest.CorrectAnswer,
+                    CreationTime = DateTime.Now,
+                    Creator = quest.Creator
+                };
+                return await Task.Run(() => View("OneTest", viewModel));
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public async Task<IActionResult> OneTest(UpdateQuestionViewModel model)
+        {
+            // Pobierz zmienną z sesji
+            int wynik = HttpContext.Session.GetInt32("wynik") ?? 0;
+            int nrPytania = HttpContext.Session.GetInt32("nrPytania") ?? 1;
+            //HttpContext.Session.SetInt32("skip", 0);
+            //HttpContext.Session.SetInt32("prewId", 0);
+            int skipValue = HttpContext.Session.GetInt32("skip") ?? 0;  // Początkowa wartość skip
+
+            HttpContext.Session.SetString("prewId", model.Id.ToString());
+            string prewId = HttpContext.Session.GetString("prewId") ?? "";
+
+            var quest = await mvcDbContext.Question.FindAsync(model.Id);
+            if (quest != null)
+            {
+                quest.Text = model.Text;
+                quest.Category = model.Category;
+                quest.AnswerA = model.AnswerA;
+                quest.AnswerB = model.AnswerB;
+                quest.AnswerC = model.AnswerC;
+                quest.CorrectAnswer = model.CorrectAnswer;
+                quest.SelectedOption = model.SelectedOption;
+                quest.CreationTime = DateTime.Now;
+                quest.Creator = model.Creator;
+
+                //await mvcDbContext.SaveChangesAsync();
+                //Sprawdzanie odpowiedzi
+                if (quest.SelectedOption == quest.CorrectAnswer)
+                {
+                    wynik++;
+                    HttpContext.Session.SetInt32("wynik", wynik);
+                }
+                if (nrPytania % 2 == 1)  // Jeśli i jest nieparzyste (bo indeksowanie zaczyna się od 0)
+                {
+                    skipValue ++;
+                    HttpContext.Session.SetInt32("skip", skipValue);
+                }
+                // Pobierz id drugiej kategorii
+                var secondCategory = await mvcDbContext.Question
+                    .Select(q => q.Category)
+                    .Distinct()
+                    .Skip(skipValue)  // Pomijamy pierwszą kategorię
+                    .FirstOrDefaultAsync();
+
+                // Pobierz losowe pytanie z drugiej kategorii
+                var randomQuestion = await mvcDbContext.Question
+                    .Where(q => q.Category == secondCategory && q.Id.ToString() != prewId)
+                    .OrderBy(q => Guid.NewGuid())  // Losowe sortowanie
+                    .FirstOrDefaultAsync();
+
+
+                if (nrPytania>=10)//20
+                {
+                    if (wynik >= 6)//12/60%
+                    {
+                        return RedirectToAction("Congratulations", new { score = wynik });
+                        //Wygenerój certyfikat
+                    }
+                    else
+                    {
+                        return RedirectToAction("FailedTest", new { score = wynik });
+                    }
+                }
+                else
+                {
+                    nrPytania++;
+                    // Zapisz nową wartość w sesji
+                    HttpContext.Session.SetInt32("nrPytania", nrPytania);
+                    return RedirectToAction("OneTest", randomQuestion);
+                }
+
+            }
+            return RedirectToAction("Index");//Error Page 
         }
 
     }

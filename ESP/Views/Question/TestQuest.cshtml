@@ -1,7 +1,37 @@
 ﻿@model List<ESP.Models.Domains.Question>
-<h1>Odpowiedz na Pytania</h1>
+<h1>Egzamin - Służba przygotowawcza</h1>
+<td>
+    <a></a>
+    <a>Rozpocznij egzamin ze służby przygotowawczej.</a>
+    <a>Po zakończeniu egzaminu zostanie wygenerowany certyfikat</a>
+    <a></a>
+</td>
 
+@{
+    var firstCategoryQuests = Model
+    .Where(q => q.Category == Model.First().Category)  // Wybierz tylko pytania z pierwszej kategorii
+    .GroupBy(q => q.Category)
+    .FirstOrDefault();
 
+    if (firstCategoryQuests != null)
+    {
+        // Pobranie jednego losowego questu z pierwszej grupy
+        var selectedQuest = firstCategoryQuests.OrderBy(q => Guid.NewGuid()).FirstOrDefault();
+
+        if (selectedQuest != null)
+        {
+            //<td><a href="OneTest/@selectedQuest.Id">Test</a></td>
+            <td>
+                <form action="OneTest" method="get">
+                    <input type="hidden" name="id" value="@selectedQuest.Id" />
+                    <button type="submit" class="btn btn-primary">Zacznij Test</button>
+                </form>
+            </td>
+        }
+    }
+}
+
+@*
 
 @using (Html.BeginForm("CheckAnswer", "Question"))
 {
@@ -68,7 +98,7 @@
     <input type="submit" class="btn btn-primary" value="Wyślij">
         }
 
-
+*@
 
 
 

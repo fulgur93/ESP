@@ -18,6 +18,7 @@ options.UseSqlServer(builder.Configuration
 .GetConnectionString("MVCDBCString")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -38,7 +39,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Question}/{action=Index}/{id?}");

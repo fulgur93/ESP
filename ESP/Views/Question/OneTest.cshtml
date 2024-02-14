@@ -1,0 +1,50 @@
+﻿@model ESP.Models.UpdateQuestionViewModel
+
+
+<h1>Służba przygotowawcza</h1>
+<form method="post" action="OneTest" class="mt-5">
+    <div class="mb-3">
+        @*<label for="" class="form-label">Id</label>*@
+        <input type="hidden" class="form-control" asp-for="Id" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Pytanie</label>
+        <input type="text" class="form-control-plaintext" asp-for="Text" readonly>
+    </div>
+    <div class="mb-3">
+        @*<label for="" class="form-label">Creator Name</label>*@
+        <input type="hidden" class="form-control" asp-for="Creator">
+    </div>
+    <div class="mb-3">
+        @*<label for="" class="form-label">Creator Name</label>*@
+        <input type="hidden" class="form-control" asp-for="CorrectAnswer">
+    </div>
+    <div class="mb-3">
+        @*<label for="" class="form-label">Question Category</label>*@
+        <input type="hidden" class="form-control" asp-for="Category">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Odpowiedź A</label>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="1">
+            <input type="text" class="form-control-plaintext" asp-for="AnswerA" readonly>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Odpowiedź B</label>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="2">
+            <input type="text" class="form-control-plaintext" asp-for="AnswerB" readonly>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Odpowiedź C</label>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="1">
+            <input type="text" class="form-control-plaintext" asp-for="AnswerC" readonly>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+@*    <button type="submit" class="btn btn-danger" asp-action="Delete" asp-controller="Question">Delete</button>*@
+</form>
