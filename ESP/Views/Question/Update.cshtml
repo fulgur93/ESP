@@ -1,11 +1,12 @@
 ﻿@model ESP.Models.UpdateQuestionViewModel
-
+@using ESP.Models.Domains;
+@using (Html.BeginForm()) { }
 
 <h1>Edit Question</h1>
 <form method="post" action="Update" class="mt-5">
     <div class="mb-3">
-        <label for="" class="form-label">Id</label>
-        <input type="text" class="form-control" asp-for="Id" readonly>
+        @* <label for="" class="form-label">Id</label> *@
+        <input type="hidden" class="form-control" asp-for="Id" readonly>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Question</label>
@@ -15,9 +16,9 @@
         <label for="" class="form-label">Creator Name</label>
         <input type="text" class="form-control" asp-for="Creator">
     </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Question Category</label>
-        <input type="text" class="form-control" asp-for="Category">
+    <div class="u-form-group u-label-top">
+        <label asp-for="Category" class="control-label">Question Category</label>
+        @Html.DropDownListFor(m => m.Category, new SelectList(Enum.GetValues(typeof(param))), "Select Param", new { @class = "form-control" })
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Answer A</label>
