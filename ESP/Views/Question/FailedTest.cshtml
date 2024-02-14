@@ -1,6 +1,10 @@
 ﻿@model int
 
 <h2>Niestety, nie zdałeś testu.</h2>
-<p>Masz wynik: @Model</p>
+@{
+    // Pobierz wynik z sesji
+    int wynik = Context.Session.GetInt32("wynik") ?? 0;
+}
+<p>Uzyskany wynik to: @(((double)wynik / 20) * 100)%</p>
 <p>Spróbuj ponownie, aby uzyskać lepszy wynik.</p>
 <a class="nav-link text-dark" asp-area="" asp-controller="Question" asp-action="TestQuest">Start Test</a>

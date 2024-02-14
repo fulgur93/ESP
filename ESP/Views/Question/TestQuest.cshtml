@@ -2,14 +2,17 @@
 <h1>Egzamin - Służba przygotowawcza</h1>
 <td>
     <a></a>
+    <br/>
     <a>Rozpocznij egzamin ze służby przygotowawczej.</a>
+    <br />
     <a>Po zakończeniu egzaminu zostanie wygenerowany certyfikat</a>
+    <br />
     <a></a>
 </td>
 
 @{
     var firstCategoryQuests = Model
-    .Where(q => q.Category == Model.First().Category)  // Wybierz tylko pytania z pierwszej kategorii
+    .Where(q => q.Category == 0)  // Wybierz tylko pytania z pierwszej kategorii
     .GroupBy(q => q.Category)
     .FirstOrDefault();
 

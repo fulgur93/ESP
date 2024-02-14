@@ -1,9 +1,13 @@
 ﻿@model int
 
 <h2>Gratulacje! Zdałeś test!</h2>
-<p>Masz wynik: @Model</p>
+@{
+    // Pobierz wynik z sesji
+    int wynik = Context.Session.GetInt32("wynik") ?? 0;
+}
+<p>Uzyskany wynik to: @(((double)wynik / 20) * 100)%</p>
 <p>Tutaj możesz pobrać swój certyfikat.</p>
-@using (Html.BeginForm("GeneratePdf", "QuestionController", new { score = Model }, FormMethod.Post))
+@using (Html.BeginForm("GeneratePdf", "Question", @wynik, FormMethod.Post))
 {
     <button type="submit">Generuj PDF</button>
 }

@@ -223,24 +223,25 @@ namespace ESP.Controllers
             return View();
         }
 
-        public ActionResult Congratulations(int score)
+        public ActionResult Congratulations()
         {
-            ViewBag.Score = score;
-            HttpContext.Session.SetInt32("wynik", 0);
-            HttpContext.Session.SetInt32("nrPytania", 0);
+
+            //HttpContext.Session.SetInt32("wynik", 0);
+            //HttpContext.Session.SetInt32("nrPytania", 0);
             return View();
         }
 
-        public ActionResult FailedTest(int score)
+        public ActionResult FailedTest()
         {
-            ViewBag.Score = score;
-            HttpContext.Session.SetInt32("wynik", 0);
-            HttpContext.Session.SetInt32("nrPytania", 0);
+
+            //HttpContext.Session.SetInt32("wynik", 0);
+            //HttpContext.Session.SetInt32("nrPytania", 0);
             return View();
         }
         [HttpPost]
-        public ActionResult GeneratePdf(int score)
+        public ActionResult GeneratePdf()
         {
+            int wynik = HttpContext.Session.GetInt32("wynik") ?? 0;
             // Logika generowania PDF na podstawie wyniku testu
             // Użyj odpowiednich narzędzi do generowania PDF, np. iTextSharp
 
@@ -252,13 +253,13 @@ namespace ESP.Controllers
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
-                        document.Add(new Paragraph($"Certyfikat ukończenia testu z wynikiem: {score}"));
+                        document.Add(new Paragraph($"Certyfikat ukończenia testu z wynikiem: "+ ((wynik/20) * 100).ToString()+"%"));
                         // Dodaj więcej treści do dokumentu według potrzeb
                         document.Close();
                     }
                 }
 
-                Response.Headers["Content-Disposition"] = $"inline; filename=Certificate_{score}.pdf";
+                Response.Headers["Content-Disposition"] = $"inline; filename=CertificateESP.pdf";
                 return File(stream.ToArray(), "application/pdf");
             }
         }
@@ -292,7 +293,7 @@ namespace ESP.Controllers
             int nrPytania = HttpContext.Session.GetInt32("nrPytania") ?? 1;
             //HttpContext.Session.SetInt32("skip", 0);
             //HttpContext.Session.SetInt32("prewId", 0);
-            int skipValue = HttpContext.Session.GetInt32("skip") ?? 0;  // Początkowa wartość skip
+            int skipValue = HttpContext.Session.GetInt32("skip") ?? 1;  // Początkowa wartość skip
 
             HttpContext.Session.SetString("prewId", model.Id.ToString());
             string prewId = HttpContext.Session.GetString("prewId") ?? "";
@@ -336,16 +337,16 @@ namespace ESP.Controllers
                     .FirstOrDefaultAsync();
 
 
-                if (nrPytania>=10)//20
+                if (nrPytania>=20)//20
                 {
-                    if (wynik >= 6)//12/60%
+                    if (wynik >= 12)//12/60%
                     {
-                        return RedirectToAction("Congratulations", new { score = wynik });
+                        return RedirectToAction("Congratulations");
                         //Wygenerój certyfikat
                     }
                     else
                     {
-                        return RedirectToAction("FailedTest", new { score = wynik });
+                        return RedirectToAction("FailedTest");
                     }
                 }
                 else
