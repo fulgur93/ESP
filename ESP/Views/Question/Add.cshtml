@@ -30,10 +30,10 @@
     </div>
     <div class="u-form-group u-label-top">
         <label asp-for="CorrectAnswer" class="control-label">Poprawna Odpowiedź</label>
-        @Html.DropDownListFor(m => m.Category,new SelectList(Enum.GetValues(typeof(odp))),"Select Param",new {@class = "form-control"})
+        @Html.DropDownListFor(m => m.CorrectAnswer, new SelectList(Enum.GetValues(typeof(odp))), "Select Param", new { @class = "form-control" })
     </div>
     <div class="mb-3">
-        <label for="" class="form-label">SelectedOption</label>
+        @* <label for="" class="form-label">SelectedOption</label> *@
         <input type="hidden" class="form-control" asp-for="SelectedOption" value="0">
     </div>
 

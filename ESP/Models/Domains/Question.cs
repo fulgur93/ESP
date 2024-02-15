@@ -18,17 +18,17 @@ namespace ESP.Models.Domains
 
     }
     [Flags]
-    public enum odp
+    public enum odp : ushort
     {
-        [EnumMember(Value = "A")]
+        //[EnumMember(Value = "A")]
         [Display(Name = "A")]
         A = 1,
 
-        [EnumMember(Value = "B")]
+        //[EnumMember(Value = "B")]
         [Display(Name = "B")]
         B = 2,
 
-        [EnumMember(Value = "C")]
+        //[EnumMember(Value = "C")]
         [Display(Name = "C")]
         C = 3
     }

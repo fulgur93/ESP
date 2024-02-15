@@ -369,6 +369,7 @@ namespace ESP.Controllers
 
                 //await mvcDbContext.SaveChangesAsync();
                 //Sprawdzanie odpowiedzi
+                //123/ABC
                 if (quest.SelectedOption.ToString() == quest.CorrectAnswer.ToString())
                 {
                     wynik++;

@@ -12,15 +12,15 @@
 
 @{
     var firstCategoryQuests = Model
-    .Where(q => q.Category == 0)  // Wybierz tylko pytania z pierwszej kategorii
+    .Where(q => (int)q.Category == 1)  // Wybierz tylko pytania z pierwszej kategorii
     .GroupBy(q => q.Category)
     .FirstOrDefault();
-
+    
     if (firstCategoryQuests != null)
     {
         // Pobranie jednego losowego questu z pierwszej grupy
         var selectedQuest = firstCategoryQuests.OrderBy(q => Guid.NewGuid()).FirstOrDefault();
-
+        
         if (selectedQuest != null)
         {
             //<td><a href="OneTest/@selectedQuest.Id">Test</a></td>
