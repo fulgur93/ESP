@@ -19,14 +19,14 @@
         @*<label for="" class="form-label">Creator Name</label>*@
         <input type="hidden" class="form-control" asp-for="Creator">
     </div>
-@*    <div class="mb-3">
-        @*<label for="" class="form-label">Creator Name</label>
+@*     <div class="mb-3">
+        <label for="" class="form-label">Creator Name</label>
         <input type="hidden" class="form-control" asp-for="CorrectAnswer">
-    </div>*@
-@*    <div class="u-form-group u-label-top">
-        <label asp-for="CorrectAnswer" class="control-label">Poprawna Odpowiedź</label>
-        @Html.DropDownListFor(m => m.Category,new SelectList(Enum.GetValues(typeof(odp))),"Select Param",new {@class = "form-control"})
-    </div>*@
+    </div> *@
+    <div class="u-form-group u-label-top"  style="display:none;">
+       @*  <label asp-for="CorrectAnswer" class="control-label">Poprawna Odpowiedź</label> *@
+        @Html.DropDownListFor(m => m.CorrectAnswer,new SelectList(Enum.GetValues(typeof(odp))),"Select Param",new {@class = "form-control"})
+    </div>
     <div class="mb-3">
         @*<label for="" class="form-label">Question Category</label>*@
         <input type="hidden" class="form-control" asp-for="Category">
@@ -34,21 +34,21 @@
     <div class="mb-3">
         <label for="" class="form-label">Odpowiedź A</label>
         <div class="form-check">
-            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="1">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="A">
             <input type="text" class="form-control-plaintext" asp-for="AnswerA" readonly>
         </div>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Odpowiedź B</label>
         <div class="form-check">
-            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="2">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="B">
             <input type="text" class="form-control-plaintext" asp-for="AnswerB" readonly>
         </div>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Odpowiedź C</label>
         <div class="form-check">
-            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="1">
+            <input type="radio" class="form-check-input" asp-for="SelectedOption" value="C">
             <input type="text" class="form-control-plaintext" asp-for="AnswerC" readonly>
         </div>
     </div>

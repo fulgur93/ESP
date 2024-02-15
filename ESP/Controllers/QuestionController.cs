@@ -394,7 +394,7 @@ namespace ESP.Controllers
                     .FirstOrDefaultAsync();
 
 
-                if (nrPytania >= 20)//20
+                if (nrPytania >= 19)//20
                 {
                     if (wynik >= 12)//12/60%
                     {
