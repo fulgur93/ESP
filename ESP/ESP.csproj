@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="itext.bouncy-castle-fips-adapter" Version="8.0.3" />
     <PackageReference Include="itext7" Version="8.0.3" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />

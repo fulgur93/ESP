@@ -2,11 +2,9 @@
 using ESP.Data;
 using ESP.Models;
 using ESP.Models.Domains;
-using iText.Commons.Actions.Contexts;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using Microsoft.AspNetCore.Http;
+using iText.IO.Image;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +17,13 @@ namespace ESP.Controllers
         private readonly MVCDBC mvcDbContext;//Baza pytań
         private readonly UserManager<ForumUser> _userManager; // Do rozpoznawania użytkownika
         private readonly ILogger<HomeController> _logger;
-        public QuestionController(MVCDBC mvcDbContext, UserManager<ForumUser> userManager, ILogger<HomeController> logger)
+        private readonly IWebHostEnvironment _env; //Do generowania PDF
+        public QuestionController(MVCDBC mvcDbContext, UserManager<ForumUser> userManager, ILogger<HomeController> logger, IWebHostEnvironment env)
         {
             _userManager = userManager;// Do rozpoznawania użytkownika
             this.mvcDbContext = mvcDbContext;
             _logger = logger;
+            _env = env;//PDF
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -238,31 +238,80 @@ namespace ESP.Controllers
             //HttpContext.Session.SetInt32("nrPytania", 0);
             return View();
         }
-        [HttpPost]
-        public ActionResult GeneratePdf()
+        //[HttpPost]
+        //public ActionResult GeneratePdf()
+        //{
+        //    int wynik = HttpContext.Session.GetInt32("wynik") ?? 0;
+
+        //    // Dodaj dostawcę bezpieczeństwa Bouncy Castle
+        //    Security.(new Org.BouncyCastle.Security.Provider.BouncyCastleProvider());
+
+
+
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        using (var writer = new PdfWriter(memoryStream))
+        //        {
+        //            using (var pdf = new PdfDocument(writer))
+        //            {
+        //                var document = new Document(pdf);
+        //                document.Add(new Paragraph("Hello, World!"));
+        //                document.Add(new Paragraph($"Certyfikat ukończenia testu z wynikiem: " + ((wynik / 20) * 100).ToString() + "%"));
+        //                document.Close();
+        //            }
+        //        }
+        //        // Ustawienia odpowiedzi HTTP
+        //        var contentDisposition = new System.Net.Mime.ContentDisposition
+        //        {
+        //            FileName = "example.pdf",
+        //            Inline = false,
+        //        };
+
+        //        Response.Headers.Add("Content-Disposition", contentDisposition.ToString());
+        //        Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+        //        // Zwrócenie pliku PDF jako odpowiedzi HTTP
+        //        return File(memoryStream.ToArray(), "application/pdf");
+        //    }
+        //}
+        [Route("/pdf")]
+        public FileStreamResult GeneratePdf()
         {
-            int wynik = HttpContext.Session.GetInt32("wynik") ?? 0;
-            // Logika generowania PDF na podstawie wyniku testu
-            // Użyj odpowiednich narzędzi do generowania PDF, np. iTextSharp
+            var imagepath = System.IO.Path.Combine(_env.WebRootPath, "/images") + "/test.png";
 
-            // Przykładowy kod generowania PDF
-            using (MemoryStream stream = new MemoryStream())
-            {
-                using (PdfWriter writer = new PdfWriter(stream))
-                {
-                    using (PdfDocument pdf = new PdfDocument(writer))
-                    {
-                        Document document = new Document(pdf);
-                        document.Add(new Paragraph($"Certyfikat ukończenia testu z wynikiem: "+ ((wynik/20) * 100).ToString()+"%"));
-                        // Dodaj więcej treści do dokumentu według potrzeb
-                        document.Close();
-                    }
-                }
+            Document doc = new Document();
+            MemoryStream stream = new MemoryStream();
 
-                Response.Headers["Content-Disposition"] = $"inline; filename=CertificateESP.pdf";
-                return File(stream.ToArray(), "application/pdf");
-            }
+            PdfWriter pdfWriter = PdfWriter.GetInstance(doc, stream);
+            pdfWriter.CloseStream = false;
+
+            doc.Open();
+            doc.Add(new Paragraph("Hello World"));
+            Image png = Image.GetInstance(imagepath);
+            doc.Add(png);
+
+            doc.Close();
+
+            stream.Flush(); //Always catches me out
+            stream.Position = 0; //Not sure if this is required
+
+            return File(stream, "application/pdf", "HelloWorld.pdf");
+
+
+
+            //// Utwórz plik na dysku i skopiuj zawartość MemoryStream do pliku
+            //var filePath = Path.Combine(_env.ContentRootPath, "GeneratedPDFs", "HelloWorld.pdf");
+            //Directory.CreateDirectory(Path.GetDirectoryName(filePath)); // Upewnij się, że katalog istnieje
+            //using (var fileStream = new FileStream(filePath, FileMode.Create))
+            //{
+            //    stream.Position = 0;
+            //    stream.CopyTo(fileStream);
+            //}
+            //return File(stream.ToArray(), "application/pdf", "HelloWorld.pdf");
+
+
         }
+
         [HttpGet]
         public async Task<IActionResult> OneTest(Guid id)
         {
@@ -320,7 +369,7 @@ namespace ESP.Controllers
                 }
                 if (nrPytania % 2 == 1)  // Jeśli i jest nieparzyste (bo indeksowanie zaczyna się od 0)
                 {
-                    skipValue ++;
+                    skipValue++;
                     HttpContext.Session.SetInt32("skip", skipValue);
                 }
                 // Pobierz id drugiej kategorii
@@ -337,7 +386,7 @@ namespace ESP.Controllers
                     .FirstOrDefaultAsync();
 
 
-                if (nrPytania>=20)//20
+                if (nrPytania >= 20)//20
                 {
                     if (wynik >= 12)//12/60%
                     {

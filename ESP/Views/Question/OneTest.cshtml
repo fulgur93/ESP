@@ -1,6 +1,9 @@
 ﻿@model ESP.Models.UpdateQuestionViewModel
 
-
+@using (Html.BeginForm("GeneratePdf", "Question", 20, FormMethod.Post))
+{
+    <button type="submit">Generuj PDF</button>
+}
 <h1>Służba przygotowawcza</h1>
 <form method="post" action="OneTest" class="mt-5">
     <div class="mb-3">
