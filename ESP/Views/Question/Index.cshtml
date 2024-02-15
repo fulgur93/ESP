@@ -4,32 +4,32 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<h1>Draw questions</h1>
+<h1>Pokaż pytania z wybranej kategori</h1>
 <form method="post" asp-action="Index" class="mt-5">
 @*    <div class="mb-3">
         <label for="" class="form-label">Category</label>
         <input type="text" class="form-control" name="category">
     </div>*@
     <div class="u-form-group u-label-top">
-        <label class="control-label">Category</label>
+        <label class="control-label">Kategoria</label>
             @Html.DropDownListFor(m => m.FirstOrDefault().Category,new SelectList(Enum.GetValues(typeof(param))),"Select Param",new {@class = "form-control"})
         @*<a name="category">@Html.DropDownList("Category",  new SelectList(Model.Select(x => new { Value = x, Text = x }),"Select Category"),new {@class = "form-control"})</a>*@
     </div>
     <br>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Pokaż</button>
 </form>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Question</th>
+            <th>Pytanie</th>
 @*             <th>AnswerA</th>
             <th>AnswerB</th>
-            <th>AnswerC</th> *@
+            <th>AnswerC</th> 
             <th>CorrectAnswer</th>
-            <th>Category</th>
-            <th>Creator</th>
-            <th>CreationTime</th>
+            <th>Category</th>*@
+            <th>Twórca</th>
+            <th>Data</th>
             <th></th>
         </tr>
     </thead>
@@ -38,11 +38,11 @@
         {
                 <tr>
                     <td>@quest.Text</td>
-                    <td>@quest.AnswerA</td>
+@*                    <td>@quest.AnswerA</td>
                     <td>@quest.AnswerB</td>
                     <td>@quest.AnswerC</td>
                     <td>@quest.CorrectAnswer</td>
-                    <td>@quest.Category</td>
+            <td>@quest.Category</td>*@
                     <td>@quest.Creator</td>
                     <td>@quest.CreationTime.ToString("dd-MM-yyyy")</td>
                     <td><a href="Question/Update/@quest.Id">Update</a></td>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace ESP.Models.Domains
 {
@@ -10,11 +11,26 @@ namespace ESP.Models.Domains
         public string AnswerA { get; set; }
         public string AnswerB { get; set; }
         public string AnswerC { get; set; }
-        public string CorrectAnswer { get; set; }
+        public odp CorrectAnswer { get; set; }
         public string? SelectedOption { get; set; }
         public string? Creator { get; set; }
         public DateTime CreationTime { get; set; }
 
+    }
+    [Flags]
+    public enum odp
+    {
+        [EnumMember(Value = "A")]
+        [Display(Name = "A")]
+        A = 1,
+
+        [EnumMember(Value = "B")]
+        [Display(Name = "B")]
+        B = 2,
+
+        [EnumMember(Value = "C")]
+        [Display(Name = "C")]
+        C = 3
     }
     [Flags]
     public enum param
@@ -38,4 +54,5 @@ namespace ESP.Models.Domains
         [Display(Name = "Wartośći statystyki oficjalnej i koncepcji mierzenia wartości statystyk oficjalnych")]
         WartośćiStatystykiOficjalnejIKoncepcjiMierzeniaWartościStatystykOficjalnych
     }
+
 }

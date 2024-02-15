@@ -199,7 +199,7 @@ namespace ESP.Controllers
                 // question.CorrectAnswer - Poprawna odpowiedź
                 // question.SelectedOption - Wybrana odpowiedź
 
-                if (quest.CorrectAnswer == quest.SelectedOption)
+                if (quest.CorrectAnswer.ToString() == quest.SelectedOption)
                 {
                     // Odpowiedź jest poprawna
                     wynik++;
@@ -369,7 +369,7 @@ namespace ESP.Controllers
 
                 //await mvcDbContext.SaveChangesAsync();
                 //Sprawdzanie odpowiedzi
-                if (quest.SelectedOption == quest.CorrectAnswer)
+                if (quest.SelectedOption.ToString() == quest.CorrectAnswer.ToString())
                 {
                     wynik++;
                     HttpContext.Session.SetInt32("wynik", wynik);

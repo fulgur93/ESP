@@ -1,4 +1,5 @@
 ﻿@model ESP.Models.UpdateQuestionViewModel
+@using ESP.Models.Domains;
 
 @using (Html.BeginForm("GeneratePdf", "Question", 20, FormMethod.Post))
 {
@@ -18,10 +19,14 @@
         @*<label for="" class="form-label">Creator Name</label>*@
         <input type="hidden" class="form-control" asp-for="Creator">
     </div>
-    <div class="mb-3">
-        @*<label for="" class="form-label">Creator Name</label>*@
+@*    <div class="mb-3">
+        @*<label for="" class="form-label">Creator Name</label>
         <input type="hidden" class="form-control" asp-for="CorrectAnswer">
-    </div>
+    </div>*@
+@*    <div class="u-form-group u-label-top">
+        <label asp-for="CorrectAnswer" class="control-label">Poprawna Odpowiedź</label>
+        @Html.DropDownListFor(m => m.Category,new SelectList(Enum.GetValues(typeof(odp))),"Select Param",new {@class = "form-control"})
+    </div>*@
     <div class="mb-3">
         @*<label for="" class="form-label">Question Category</label>*@
         <input type="hidden" class="form-control" asp-for="Category">
