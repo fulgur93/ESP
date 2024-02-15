@@ -277,8 +277,8 @@ namespace ESP.Controllers
         [Route("/pdf")]
         public FileStreamResult GeneratePdf()
         {
-            var imagepath = System.IO.Path.Combine(_env.WebRootPath, "/images") + "/test.png";
-
+            //var imagepath = System.IO.Path.Combine(_env.WebRootPath, "\\images") + "\\gus.jpg";
+            var imagepath = Path.Combine(_env.WebRootPath, "images", "gus.jpg");
             Document doc = new Document();
             MemoryStream stream = new MemoryStream();
 
@@ -287,9 +287,16 @@ namespace ESP.Controllers
 
             doc.Open();
             doc.Add(new Paragraph("Hello World"));
-            Image png = Image.GetInstance(imagepath);
-            doc.Add(png);
-
+            
+            if (System.IO.File.Exists(imagepath))
+            {
+                Image png = Image.GetInstance(imagepath);
+                doc.Add(png);
+            }
+            else
+            {
+                doc.Add(new Paragraph("Image not found"));
+            }
             doc.Close();
 
             stream.Flush(); //Always catches me out
